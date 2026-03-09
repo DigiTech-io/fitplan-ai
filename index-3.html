@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitPlan AI – India's #1 Personal Fitness Planner</title>
+<meta name="description" content="Get your 100% personalized AI diet & workout plan in 2 minutes. Free to try!">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #FF6B00;
+  --saffron2: #FF9500;
+  --gold: #FFD700;
+  --dark: #0A0A0F;
+  --card: #16161F;
+  --border: #2A2A3A;
+  --text: #E8E8F0;
+  --muted: #8888AA;
+  --green: #00C853;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--dark); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; overflow-x: hidden; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 20% 20%, #FF6B0011 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, #2979FF0D 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+nav {
+  position: relative; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid #ffffff0a;
+  background: #0A0A0F99;
+}
+.nav-logo { display: flex; align-items: center; gap: 4px; font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; }
+.nav-logo .fit { color: var(--text); }
+.nav-logo .plan { color: var(--saffron); }
+.nav-logo .ai-tag { background: linear-gradient(135deg, var(--saffron), var(--gold)); color: #000; font-size: 0.55rem; font-weight: 900; padding: 2px 7px; border-radius: 4px; letter-spacing: 1px; margin-left: 4px; }
+.nav-badge { display: flex; align-items: center; gap: 6px; background: #ffffff08; border: 1px solid #ffffff14; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; color: var(--muted); }
+.dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hero { position: relative; z-index: 10; text-align: center; padding: 60px 20px 50px; max-width: 700px; margin: 0 auto; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #FF6B0015, #FF950015); border: 1px solid #FF6B0030; color: var(--saffron2); padding: 6px 16px; border-radius: 30px; font-size: 0.78rem; font-weight: 600; margin-bottom: 24px; animation: fadeDown 0.5s ease both; }
+.hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 7vw, 3.8rem); font-weight: 800; line-height: 1.1; letter-spacing: -1px; animation: fadeDown 0.6s ease both; }
+.hero h1 .grad { background: linear-gradient(135deg, var(--saffron), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-desc { margin-top: 18px; font-size: 1.05rem; color: var(--muted); line-height: 1.6; animation: fadeDown 0.7s ease both; }
+.hero-desc b { color: var(--text); }
+.trust-bar { display: flex; justify-content: center; gap: 8px; margin-top: 28px; flex-wrap: wrap; animation: fadeDown 0.8s ease both; }
+.trust-chip { display: flex; align-items: center; gap: 6px; background: #ffffff06; border: 1px solid #ffffff10; padding: 7px 14px; border-radius: 30px; font-size: 0.78rem; color: var(--muted); }
+
+.form-wrap { position: relative; z-index: 10; max-width: 640px; margin: 0 auto; padding: 0 16px 20px; animation: fadeUp 0.8s ease both; }
+.form-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 80px #00000088, 0 0 0 1px #FF6B0015; }
+.form-header { background: linear-gradient(135deg, #1A1A28, #1E1E2E); padding: 22px 24px 18px; border-bottom: 1px solid var(--border); }
+.form-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.form-header p { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+.form-body { padding: 22px 20px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: 1 / -1; }
+label { font-size: 0.75rem; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+input, select { background: #0E0E18; border: 1px solid #2A2A3A; border-radius: 12px; padding: 11px 14px; color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.95rem; outline: none; transition: all 0.2s; appearance: none; }
+input:focus, select:focus { border-color: var(--saffron); box-shadow: 0 0 0 3px #FF6B0018; }
+input::placeholder { color: #44445A; }
+select option { background: #16161F; }
+
+.btn-generate { width: 100%; margin-top: 20px; padding: 16px; background: linear-gradient(135deg, #FF6B00, #FF9500); border: none; border-radius: 14px; color: #fff; font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 30px #FF6B0050; transition: all 0.2s; }
+.btn-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 40px #FF6B0070; }
+.btn-generate:active { transform: scale(0.98); }
+.spinner { display: none; width: 22px; height: 22px; border: 3px solid #ffffff33; border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto; }
+
+#result-section { display: none; position: relative; z-index: 10; max-width: 640px; margin: 20px auto 0; padding: 0 16px 40px; }
+.result-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 80px #00000088; }
+.result-hero { background: linear-gradient(135deg, #FF6B00, #FF9500, #FFD700); padding: 24px; position: relative; overflow: hidden; }
+.result-hero::before { content: '💪'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 4rem; opacity: 0.2; }
+.result-hero h2 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: #fff; }
+.result-hero p { font-size: 0.88rem; color: #ffffffbb; margin-top: 4px; }
+.result-body { padding: 20px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+.stat-card { background: #0E0E18; border: 1px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; }
+.stat-card .val { font-size: 1.4rem; font-weight: 800; }
+.stat-card .lbl { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
+
+.section-head { display: flex; align-items: center; gap: 10px; margin: 20px 0 12px; }
+.section-head h3 { font-size: 1rem; font-weight: 700; color: var(--text); white-space: nowrap; }
+.section-head .line { flex: 1; height: 1px; background: var(--border); }
+
+.table-wrap { border-radius: 12px; border: 1px solid var(--border); overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 320px; }
+thead tr { background: #0E0E18; }
+th { padding: 10px 12px; text-align: left; font-size: 0.72rem; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+td { padding: 10px 12px; border-bottom: 1px solid #1A1A28; color: #C8C8E0; vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #0E0E18; }
+td small { color: #666688; font-size: 0.78rem; display: block; margin-top: 2px; }
+
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+.b-orange { background: #FF6B0018; color: var(--saffron2); border: 1px solid #FF6B0030; }
+.b-blue { background: #2979FF18; color: #6BA3FF; border: 1px solid #2979FF30; }
+.b-green { background: #00C85318; color: #4AE88A; border: 1px solid #00C85330; }
+
+.bmi-note { background: #0E0E18; border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 4px; }
+.bmi-note .hi { color: var(--text); font-size: 0.88rem; }
+.bmi-note .en { color: var(--muted); font-size: 0.8rem; margin-top: 4px; }
+
+.tip-item { display: flex; gap: 12px; align-items: flex-start; background: #0E0E18; border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+.tip-num { width: 24px; height: 24px; background: linear-gradient(135deg, var(--saffron), var(--saffron2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+.tip-text { font-size: 0.86rem; color: var(--text); line-height: 1.5; }
+.tip-text small { display: block; color: var(--muted); font-size: 0.78rem; margin-top: 3px; }
+
+.upgrade-card { background: linear-gradient(135deg, #1A1008, #201508); border: 1px solid #FF6B0030; border-radius: 20px; padding: 24px 20px; text-align: center; margin-top: 20px; }
+.upgrade-label { display: inline-block; background: linear-gradient(135deg, var(--saffron), var(--gold)); color: #000; font-size: 0.72rem; font-weight: 800; padding: 3px 12px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px; }
+.upgrade-card h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.upgrade-card p { color: #AA8866; font-size: 0.86rem; margin-bottom: 16px; line-height: 1.7; }
+.features-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; text-align: left; }
+.feat { display: flex; align-items: center; gap: 7px; font-size: 0.82rem; color: #CC9966; }
+.feat .check { color: var(--green); }
+.price-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+.price-old { font-size: 1rem; color: var(--muted); text-decoration: line-through; }
+.price-new { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--gold); }
+.price-tag { font-size: 0.75rem; color: var(--green); background: #00C85318; border: 1px solid #00C85330; padding: 3px 10px; border-radius: 20px; }
+.btn-buy { display: block; width: 100%; padding: 15px; background: linear-gradient(135deg, #FF6B00, #FFD700); border: none; border-radius: 14px; color: #000; font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800; cursor: pointer; text-decoration: none; box-shadow: 0 4px 24px #FF6B0050; transition: all 0.2s; margin-bottom: 10px; }
+.btn-buy:hover { transform: translateY(-2px); }
+.btn-wa { display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 13px; background: #1A3A35; border: 1px solid #128C7E44; border-radius: 14px; color: #4AE8CC; font-weight: 600; font-size: 0.95rem; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.btn-wa:hover { background: #1E4A42; }
+
+.error-box { background: #1A0A0A; border: 1px solid #FF525244; border-radius: 16px; padding: 24px; text-align: center; color: #FF8888; margin-top: 10px; }
+.error-box small { display: block; color: #664444; font-size: 0.78rem; margin-top: 8px; }
+
+footer { position: relative; z-index: 10; text-align: center; padding: 30px 20px 50px; border-top: 1px solid #ffffff08; }
+.footer-logo { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+.footer-logo span { color: var(--saffron); }
+footer p { font-size: 0.78rem; color: var(--muted); }
+footer a { color: #6688AA; text-decoration: none; }
+
+@media (max-width: 480px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+  .features-list { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <span class="fit">Fit</span><span class="plan">Plan</span><span class="ai-tag">AI</span>
+  </div>
+  <div class="nav-badge"><div class="dot"></div> Live & Free</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">🇮🇳 India's Most Trusted AI Fitness Planner</div>
+  <h1>
+    <span>Your Personal</span><br>
+    <span class="grad">Diet & Workout Plan</span><br>
+    <span>In 2 Minutes</span>
+  </h1>
+  <p class="hero-desc">Not a generic plan. <b>Your age, your weight, your goal</b> — AI creates a plan only for you.<br>Hindi aur English dono mein. Bilkul free.</p>
+  <div class="trust-bar">
+    <div class="trust-chip">⚡ AI Powered</div>
+    <div class="trust-chip">🎯 100% Personalized</div>
+    <div class="trust-chip">🔒 Private & Secure</div>
+    <div class="trust-chip">🆓 Free Basic Plan</div>
+  </div>
+</div>
+
+<div class="form-wrap">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>📋 Enter Your Details</h2>
+      <p>Fill all fields to get your personalized plan / Sabhi details bharo</p>
+    </div>
+    <div class="form-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name / Naam</label>
+          <input type="text" id="name" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label>Age / Umra</label>
+          <input type="number" id="age" placeholder="Years" min="10" max="80">
+        </div>
+        <div class="form-group">
+          <label>Weight (kg)</label>
+          <input type="number" id="weight" placeholder="kg" min="30" max="200">
+        </div>
+        <div class="form-group">
+          <label>Height (cm)</label>
+          <input type="number" id="height" placeholder="cm" min="100" max="220">
+        </div>
+        <div class="form-group">
+          <label>Gender / Ling</label>
+          <select id="gender">
+            <option value="">Select</option>
+            <option value="Male">Male / Purush</option>
+            <option value="Female">Female / Mahila</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Diet Type / Khana</label>
+          <select id="diet">
+            <option value="">Select</option>
+            <option value="Vegetarian">🥗 Vegetarian</option>
+            <option value="Non-Vegetarian">🍗 Non-Vegetarian</option>
+            <option value="Eggetarian">🥚 Eggetarian</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Your Goal / Aapka Lakshya</label>
+          <select id="goal">
+            <option value="">Select your goal</option>
+            <option value="Weight Loss">⬇️ Weight Loss – Vajan Kam Karna</option>
+            <option value="Muscle Gain">💪 Muscle Gain – Sharir Banana</option>
+            <option value="Stay Fit">✅ Stay Fit – Fit Rehna</option>
+            <option value="Increase Stamina">🏃 Stamina Badhana</option>
+            <option value="Weight Gain">⬆️ Weight Gain – Vajan Badhana</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Daily Workout Time / Vyayam Samay</label>
+          <select id="time">
+            <option value="">Select time available</option>
+            <option value="15-20 minutes">⏱ 15–20 min (Bahut Kam)</option>
+            <option value="30 minutes">⏱ 30 min (Thoda)</option>
+            <option value="45-60 minutes">⏱ 45–60 min (Accha)</option>
+            <option value="90+ minutes">⏱ 90+ min (Full Dedication)</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-generate" onclick="generatePlan()">
+        <span id="btn-text">✨ Generate My Free Plan</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="result-section">
+  <div id="result-content"></div>
+</div>
+
+<footer>
+  <div class="footer-logo">FitPlan <span>AI</span></div>
+  <p>Powered by Advanced AI • Made in 🇮🇳 India</p>
+  <p style="margin-top:8px">
+    <a href="https://digitechcyber.github.io" target="_blank">digitechcyber.github.io</a> •
+    <a href="https://wa.me/918210073056">WhatsApp Support</a>
+  </p>
+</footer>
+
+<script>
+const API_KEY = "sk-ant-api03-ceAJBqhJcKrSQE9Gqb3MXaU3iWPPI9jL3PL7LgWU1ncJq4ZnNXJzKh7ZiE3H-doluoRwGx-eATt_7-UH4vcf_A-5I_1zAAA";
+const WA = "918210073056";
+const RP = "https://rzp.io/rzp/eQD8sBQ";
+
+async function generatePlan() {
+  const ids = ['name','age','weight','height','gender','diet','goal','time'];
+  const v = {};
+  for (const id of ids) {
+    v[id] = document.getElementById(id).value.trim();
+    if (!v[id]) { alert('Please fill all details / Sabhi details bharo!'); return; }
+  }
+
+  document.getElementById('btn-text').style.display = 'none';
+  document.getElementById('spinner').style.display = 'block';
+  document.getElementById('result-section').style.display = 'none';
+
+  const bmi = (parseFloat(v.weight) / Math.pow(parseFloat(v.height)/100, 2)).toFixed(1);
+
+  const prompt = `You are India's top certified fitness and nutrition expert. Create a PERSONALIZED fitness plan.
+
+User profile:
+- Name: ${v.name}
+- Age: ${v.age} years
+- Weight: ${v.weight} kg
+- Height: ${v.height} cm
+- BMI: ${bmi}
+- Gender: ${v.gender}
+- Diet preference: ${v.diet}
+- Fitness goal: ${v.goal}
+- Available workout time: ${v.time}
+
+Return ONLY a valid JSON object. No markdown. No explanation. No code blocks. Just pure JSON.
+
+The JSON must have exactly these fields:
+{
+  "greeting_hi": "motivating Hindi greeting using their name",
+  "greeting_en": "motivating English greeting",
+  "bmi_status": "one of: Underweight, Normal, Overweight, Obese",
+  "bmi_color": "one of: green, orange, red",
+  "bmi_hi": "one sentence Hindi BMI feedback",
+  "bmi_en": "one sentence English BMI feedback",
+  "daily_cal": "number like 1800",
+  "diet_plan": [
+    {"time": "7:00 AM", "food_hi": "Hindi food", "food_en": "English food", "cal": "300 kcal"},
+    {"time": "10:00 AM", "food_hi": "Hindi food", "food_en": "English food", "cal": "200 kcal"},
+    {"time": "1:00 PM", "food_hi": "Hindi food", "food_en": "English food", "cal": "500 kcal"},
+    {"time": "4:00 PM", "food_hi": "Hindi food", "food_en": "English food", "cal": "150 kcal"},
+    {"time": "7:00 PM", "food_hi": "Hindi food", "food_en": "English food", "cal": "450 kcal"},
+    {"time": "9:00 PM", "food_hi": "Hindi food", "food_en": "English food", "cal": "100 kcal"}
+  ],
+  "workout": [
+    {"day": "Monday", "ex_hi": "Hindi exercise name", "ex_en": "English exercise name", "sets": "3 x 12", "focus": "Chest"},
+    {"day": "Tuesday", "ex_hi": "Hindi exercise name", "ex_en": "English exercise name", "sets": "3 x 15", "focus": "Back"},
+    {"day": "Wednesday", "ex_hi": "Hindi exercise name", "ex_en": "English exercise name", "sets": "30 min", "focus": "Cardio"},
+    {"day": "Thursday", "ex_hi": "Hindi exercise name", "ex_en": "English exercise name", "sets": "3 x 12", "focus": "Legs"},
+    {"day": "Friday", "ex_hi": "Hindi exercise name", "ex_en": "English exercise name", "sets": "3 x 10", "focus": "Shoulders"}
+  ],
+  "tips_hi": ["tip 1 in Hindi", "tip 2 in Hindi", "tip 3 in Hindi"],
+  "tips_en": ["tip 1 in English", "tip 2 in English", "tip 3 in English"]
+}
+
+Make everything specific to: goal=${v.goal}, diet=${v.diet}, time=${v.time}, BMI=${bmi}, gender=${v.gender}.`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": API_KEY,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 1500,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error("API Error: " + res.status);
+    }
+
+    const data = await res.json();
+
+    if (!data.content || data.content.length === 0) {
+      throw new Error("Empty response from AI");
+    }
+
+    let rawText = data.content.map(i => i.text || "").join("");
+
+    // Clean up any markdown formatting
+    rawText = rawText.replace(/```json/gi, "").replace(/```/g, "").trim();
+
+    // Extract JSON object
+    const jsonStart = rawText.indexOf('{');
+    const jsonEnd = rawText.lastIndexOf('}');
+    if (jsonStart === -1 || jsonEnd === -1) {
+      throw new Error("Could not find JSON in response");
+    }
+    rawText = rawText.substring(jsonStart, jsonEnd + 1);
+
+    const plan = JSON.parse(rawText);
+
+    // Validate required fields
+    if (!plan.diet_plan || !Array.isArray(plan.diet_plan)) plan.diet_plan = [];
+    if (!plan.workout || !Array.isArray(plan.workout)) plan.workout = [];
+    if (!plan.tips_hi || !Array.isArray(plan.tips_hi)) plan.tips_hi = ["Paani zyada piyo", "Neend poori lo", "Stress kam karo"];
+    if (!plan.tips_en || !Array.isArray(plan.tips_en)) plan.tips_en = ["Drink more water", "Sleep well", "Reduce stress"];
+
+    renderPlan(plan, {...v, bmi});
+
+  } catch(e) {
+    document.getElementById('result-content').innerHTML = `
+      <div class="error-box">
+        ⚠️ Kuch gadbad hui. Dobara try karo!<br>
+        Something went wrong. Please try again.
+        <small>Error: ${e.message}</small>
+      </div>`;
+    document.getElementById('result-section').style.display = 'block';
+  } finally {
+    document.getElementById('btn-text').style.display = 'block';
+    document.getElementById('spinner').style.display = 'none';
+  }
+}
+
+function renderPlan(p, info) {
+  const bmiC = p.bmi_color === 'green' ? '#00C853' : p.bmi_color === 'orange' ? '#FF9500' : '#FF5252';
+  const waMsg = encodeURIComponent(`Hi! I tried FitPlan AI and want the ₹99 detailed plan!\nName: ${info.name}\nGoal: ${info.goal}\nWeight: ${info.weight}kg`);
+
+  const dietRows = (p.diet_plan || []).map(m => `
+    <tr>
+      <td><b>${m.time || ''}</b></td>
+      <td>${m.food_hi || ''}<small>${m.food_en || ''}</small></td>
+      <td><span class="badge b-green">${m.cal || ''}</span></td>
+    </tr>`).join('');
+
+  const workRows = (p.workout || []).map(w => `
+    <tr>
+      <td><b>${w.day || ''}</b></td>
+      <td>${w.ex_hi || ''}<small>${w.ex_en || ''}</small></td>
+      <td>${w.sets || ''}</td>
+      <td><span class="badge b-blue">${w.focus || ''}</span></td>
+    </tr>`).join('');
+
+  const tips = (p.tips_hi || []).map((t, i) => `
+    <div class="tip-item">
+      <div class="tip-num">${i+1}</div>
+      <div class="tip-text">${t}<small>${(p.tips_en || [])[i] || ''}</small></div>
+    </div>`).join('');
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="result-card">
+      <div class="result-hero">
+        <h2>${p.greeting_hi || 'Badiya! Aapka plan ready hai!'}</h2>
+        <p>${p.greeting_en || 'Your personalized plan is ready!'}</p>
+      </div>
+      <div class="result-body">
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="val" style="color:${bmiC}">${info.bmi}</div>
+            <div class="lbl">BMI · ${p.bmi_status || ''}</div>
+          </div>
+          <div class="stat-card">
+            <div class="val" style="color:#FFD700">${p.daily_cal || '–'}</div>
+            <div class="lbl">Daily Calories</div>
+          </div>
+          <div class="stat-card">
+            <div class="val" style="color:#FF9500;font-size:0.9rem">${info.goal}</div>
+            <div class="lbl">Your Goal</div>
+          </div>
+        </div>
+
+        <div class="bmi-note">
+          <div class="hi">📊 ${p.bmi_hi || ''}</div>
+          <div class="en">${p.bmi_en || ''}</div>
+        </div>
+
+        <div class="section-head"><h3>🥗 Your Diet Plan</h3><div class="line"></div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Time</th><th>Food / Khana</th><th>Cal</th></tr></thead>
+            <tbody>${dietRows}</tbody>
+          </table>
+        </div>
+
+        <div class="section-head"><h3>🏋️ Your Workout Plan</h3><div class="line"></div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Day</th><th>Exercise</th><th>Sets</th><th>Focus</th></tr></thead>
+            <tbody>${workRows}</tbody>
+          </table>
+        </div>
+
+        <div class="section-head"><h3>💡 Personal Tips</h3><div class="line"></div></div>
+        ${tips}
+
+        <div class="upgrade-card">
+          <div class="upgrade-label">⭐ PREMIUM PLAN</div>
+          <h3>Get Your Complete 30-Day Plan</h3>
+          <p>Yeh sirf ek jhalak thi! Poora plan lo — daily tracking, grocery list aur direct WhatsApp support ke saath.</p>
+          <div class="features-list">
+            <div class="feat"><span class="check">✓</span> 30-day detailed plan</div>
+            <div class="feat"><span class="check">✓</span> Weekly grocery list</div>
+            <div class="feat"><span class="check">✓</span> Progress tracker</div>
+            <div class="feat"><span class="check">✓</span> WhatsApp support</div>
+            <div class="feat"><span class="check">✓</span> Monthly updates</div>
+            <div class="feat"><span class="check">✓</span> Recipe suggestions</div>
+          </div>
+          <div class="price-row">
+            <div class="price-old">₹499</div>
+            <div class="price-new">₹99</div>
+            <div class="price-tag">80% OFF</div>
+          </div>
+          <a class="btn-buy" href="${RP}" target="_blank">🛒 Buy Now for ₹99 Only</a>
+          <a class="btn-wa" href="https://wa.me/${WA}?text=${waMsg}" target="_blank">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+
+      </div>
+    </div>`;
+
+  document.getElementById('result-section').style.display = 'block';
+  document.getElementById('result-section').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
